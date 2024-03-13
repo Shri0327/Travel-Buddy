@@ -4,8 +4,10 @@ import SendIcon from '@mui/icons-material/Send';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 // import { chatData } from '../../data/chatData';
 import { useSelector, useDispatch } from 'react-redux';
+import { setEndVid } from '../../redux/features/aiCard';
 import { setCurrChat } from '../../redux/features/querySlice';
 import Chat from './Chat';
+import { useSpeechSynthesis } from 'react-speech-kit';
 import { CircularProgress } from '@mui/material';
 import { toast } from 'react-toastify';
 import Api from '../../api';
@@ -21,6 +23,13 @@ const ChatBox = ({ customMsg }) => {
     const [loading, setLoading] = useState(true);
     const { startLocationInfo, destinationInfo } = useSelector((state) => state.query);
     const user = JSON.parse(localStorage.getItem('user'));
+    const { audio, video, endVid } = useSelector((state) => state.aiCard);
+    const { speak, cancel, voices } = useSpeechSynthesis({
+        onEnd: () => {
+            console.log("End");
+            dispatch(setEndVid(false));
+        },
+    });
 
     useEffect(() => {
         setLoading(true);
@@ -76,6 +85,12 @@ const ChatBox = ({ customMsg }) => {
         .then(async (res) => {
             console.log(res.data)
             await timeout(2000);
+            console.log(audio, video)
+            if (!audio && video) {
+                speak({ text: res.data.text, voice: voices[0], rate: 1 });
+                console.log('speaking')
+                dispatch(setEndVid(true));
+            }
             setMessage('');
                 if (res.data.message === 'success') {
                     setChange(!change);

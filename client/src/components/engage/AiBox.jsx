@@ -70,7 +70,7 @@ const AiBox = ({ setCustomMsg, allChats }) => {
                         {video ? (<VideocamOffOutlinedIcon sx={{ fontSize: '2rem' }} />) : (<VideocamOutlinedIcon sx={{ fontSize: '2rem' }} />)}
                     </IconButton>
                 </Tooltip>
-                <Tooltip title={audio ? 'Turn Off Audio' : 'Turn On Audio'} arrow>
+                <Tooltip title={!audio ? 'Turn Off Audio' : 'Turn On Audio'} arrow>
                     <IconButton sx={{
                         color: 'white',
                         padding: '10px',
@@ -81,7 +81,7 @@ const AiBox = ({ setCustomMsg, allChats }) => {
                     }}
                         onClick={() => dispatch(toggleAudio(!audio))}
                     >
-                        {audio ? (<MicOffOutlinedIcon sx={{ fontSize: '2rem' }} />) : (<MicNoneOutlinedIcon sx={{ fontSize: '2rem' }} />)}
+                        {!audio ? (<MicOffOutlinedIcon sx={{ fontSize: '2rem' }} />) : (<MicNoneOutlinedIcon sx={{ fontSize: '2rem' }} />)}
                     </IconButton>
                 </Tooltip>
             </div>

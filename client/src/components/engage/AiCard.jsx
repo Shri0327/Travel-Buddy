@@ -111,6 +111,11 @@ const AiCard = ({ allChats }) => {
         </Box>
     );
 
+    useEffect(() => {
+        console.log(endVid)
+    }
+    , [endVid])
+
     return (
         <div className='h-1/2 w-full bg-white shadow-slate shadow-md rounded-xl relative'>
             <span className='absolute top-4 right-4'>

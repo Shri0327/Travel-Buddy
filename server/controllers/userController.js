@@ -223,7 +223,7 @@ class UserController {
       user.chat[user.chat.length - 1].chatInfo.push(chat1);
       user.chat[user.chat.length - 1].chatInfo.push(chat2)
       await user.save();
-      return res.status(200).json({ message: "success" });
+      return res.status(200).json({ message: "success", text: resp });
     } catch (error) {
       console.log(error)
       return res.status(500).json({ message: "Internal Server Error" });
