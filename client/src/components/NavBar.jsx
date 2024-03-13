@@ -59,7 +59,7 @@ function NavBar() {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.href === path ? 'bg-gray-900 underline font-bold' : ' hover:underline',
+                          item.href === path ? 'underline font-bold' : ' hover:underline',
                           'rounded-md px-3 py-2 text-sm text-white'
                         )}
                         aria-current={item.current ? 'page' : undefined}
@@ -121,7 +121,7 @@ function NavBar() {
                             localStorage.clear()
                             window.location.href = '/login'
                           }}
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700 cursor-pointer')}
+                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm cursor-pointer')}
                           >
                             Sign out
                           </a>

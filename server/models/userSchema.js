@@ -1,5 +1,46 @@
 import mongoose from 'mongoose';
 
+const picSchema = new mongoose.Schema({
+  is_attached: String,
+  og_pic_name: String,
+  pic_type: String,
+  pic_name: String,
+  pic_path: String,
+}); 
+
+const chatSchema = new mongoose.Schema({
+  chatId: {
+    type: String,
+    required: true,
+  },
+  query: {
+    type: String,
+    required: true,
+  },
+  response: {
+    type: String,
+    required: true,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  startLocation: {
+    type: String,
+  },
+  destination: {
+    type: String,
+  },
+  picture: picSchema,
+});
+
+const allChatSchema = new mongoose.Schema({
+    chatName: {
+      type: String,
+    },
+    chatInfo: [chatSchema],
+});
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -24,6 +65,7 @@ const userSchema = new mongoose.Schema({
   pfp: {
     type: String,
   },
+  chat: [allChatSchema],
 });
 
 const User = mongoose.model("recur-user", userSchema);

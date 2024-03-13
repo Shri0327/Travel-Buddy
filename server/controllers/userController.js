@@ -46,7 +46,7 @@ class UserController {
       user.otp = otp;
       await user.save();
       let mailOptions = {
-      from: `Travel-Buddy <support>`,
+        from: `Travel-Buddy <support>`,
         to: email,
         subject: "OTP for Verification",
         text: `Your OTP for verification is: ${otp}`,
@@ -96,13 +96,13 @@ class UserController {
       const user = await User.findOne({ email });
       if (otp == 123456) {
         const secretKey = process.env.JWTkey;
-        const token = jwt.sign({ 
-          id: user._id, 
+        const token = jwt.sign({
+          id: user._id,
           email: user.email,
           name: user.name,
-        }, 
-        secretKey,
-        { expiresIn: "12h" }
+        },
+          secretKey,
+          { expiresIn: "12h" }
         );
         res.status(200).json({ message: "success", token });
         return
@@ -112,12 +112,12 @@ class UserController {
       user.otp = "";
       await user.save();
       const secretKey = process.env.JWTkey;
-      const token = jwt.sign({ 
-        id: user._id, 
-        email: user.email 
-      }, 
-      secretKey,
-      { expiresIn: "12h" }
+      const token = jwt.sign({
+        id: user._id,
+        email: user.email
+      },
+        secretKey,
+        { expiresIn: "12h" }
       );
       res.status(200).json({ message: "success", token });
     } catch (error) {
@@ -126,7 +126,31 @@ class UserController {
     }
   }
 
-  
+  // test chat
+  testChat = async (req, res) => {
+    try {
+      const { email, query } = req.body;
+      const user = await User.findOne({ email });
+      const resp = 'This is the response from the server';
+      return res.status(200).json({ message: "success", resp });
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
+  // img to place
+  imgToPlace = async (req, res) => {
+    try {
+      const { email, picture } = req.body;
+      const pythonProcess = spawn('python', ["./pythonscripts/place.py",])
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+    
+
 }
 
 export default UserController;

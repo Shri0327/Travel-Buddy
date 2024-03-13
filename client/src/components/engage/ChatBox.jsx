@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 import { TextField, IconButton, Tooltip } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import { BgText } from './BgText';
+import { chatData } from '../../data/chatData';
+import Chat from './Chat';
 
 const ChatBox = ({ customMsg }) => {
     const [message, setMessage] = useState(customMsg || '');
+
     return (
-        <div className='relative w-full h-full shadow-2xl shadow-slate rounded-xl p-4 flex flex-col'>
-            <div
+        <div className='bg-white relative w-full h-full shadow-2xl shadow-slate rounded-xl p-4 flex flex-col'>
+            <div className='w-full h-[88%]'>
+                <Chat chatData={chatData} />
+            </div>
+            {chatData.length === 0 && (<div
             style={{
                 top: '40%',
                 left: '50%',
@@ -16,8 +21,8 @@ const ChatBox = ({ customMsg }) => {
             }} 
             className='absolute w-full text-center text-7xl font-bold opacity-15'>
                 ANY TRAVEL PLANS?
-            </div>
-            <div className='absolute w-[98%] bottom-4 flex items-center gap-2 justify-evenly'>
+            </div>)}
+            <div className='bg-white w-full flex items-center gap-2 justify-evenly p-4'>
                 <TextField
                     id="outlined-multiline-static"
                     label="Type your Query"
@@ -29,9 +34,9 @@ const ChatBox = ({ customMsg }) => {
                     className='w-full h-full'
                     sx={{
                         '& .MuiInputBase-root': {
-                            backgroundColor: 'white',
+                            backgroundColor: '#F5F5F5',
                             borderRadius: '100px',
-                        }
+                        },
                     }}
                 />
                 <span>
