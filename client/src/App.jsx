@@ -7,10 +7,11 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Engage from "./pages/Engage";
 import BlogHome from "./pages/BlogHome";
-import MapPage from "./pages/MapPage";
+import MapPage from "./pages/MapPage/MapPage";
 import Blog from "./pages/Blog";
 import Profile from "./pages/Profile";
 import Redirect from "./Redirect";
+import Sendmssg from "./pages/Sendmssg"
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -79,6 +80,10 @@ function App() {
         {
           path: '/profile',
           element: <Profile />
+        },
+        {
+          path: '/sendmssg',
+          element: <Sendmssg />
         }
       ]
     }

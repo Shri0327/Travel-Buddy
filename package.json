@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@react-google-maps/api": "^2.19.3",
-    "@vis.gl/react-google-maps": "^0.7.1"
-  }
-}
