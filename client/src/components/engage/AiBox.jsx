@@ -14,7 +14,7 @@ import { Spin as Hamburger } from 'hamburger-react'
 import { toast } from 'react-toastify';
 import Api from '../../api';
 
-const AiBox = ({ setCustomMsg }) => {
+const AiBox = ({ setCustomMsg, allChats }) => {
     const dispatch = useDispatch();
     const { audio, video, endVid } = useSelector((state) => state.aiCard);
     const { startLocationInfo, destinationInfo } = useSelector((state) => state.query);
@@ -54,7 +54,7 @@ const AiBox = ({ setCustomMsg }) => {
 
     return (
         <div className='w-full h-full flex flex-col items-center gap-4 relative'>
-            <AiCard />
+            <AiCard allChats={allChats}/>
             <div className='w-full flex items-center justify-around'>
                 <Tooltip title={video ? 'Turn Off Video' : 'Turn On Video'} arrow>
                     <IconButton sx={{

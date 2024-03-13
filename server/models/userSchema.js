@@ -9,15 +9,11 @@ const picSchema = new mongoose.Schema({
 }); 
 
 const chatSchema = new mongoose.Schema({
-  chatId: {
+  name: {
     type: String,
     required: true,
   },
-  query: {
-    type: String,
-    required: true,
-  },
-  response: {
+  message: {
     type: String,
     required: true,
   },

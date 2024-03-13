@@ -5,6 +5,7 @@ export const querySlice = createSlice({
     initialState: {
         startLocationInfo: {},
         destinationInfo: {},
+        currChat: [],
     },
     reducers: {
         setStartLocationInfo: (state, action) => {
@@ -12,8 +13,11 @@ export const querySlice = createSlice({
         },
         setDestinationInfo: (state, action) => {
             state.destinationInfo = action.payload;
+        },
+        setCurrChat: (state, action) => {
+            state.currChat = action.payload;
         }
     },
 });
 
-export const { setStartLocationInfo, setDestinationInfo } = querySlice.actions;
+export const { setStartLocationInfo, setDestinationInfo, setCurrChat } = querySlice.actions;

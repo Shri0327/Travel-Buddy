@@ -64,7 +64,7 @@ class UserController {
     try {
       const { name, email, phone, password } = req.body;
       const passwordHash = await bcrypt.hash(password, 10);
-      const newUser = new User({ name, email, phone, password: passwordHash });
+      const newUser = new User({ name, email, phone, password: passwordHash, chat: []});
       await newUser.save();
       res.status(200).json({ message: "success" });
     } catch (error) {
@@ -126,13 +126,104 @@ class UserController {
     }
   }
 
+  // get last chat
+  getLastChat = async (req, res) => {
+    try {
+      const { email } = req.body;
+      const user = await User.findOne({ email });
+      if (!user) return res.status(404).json({ message: "User does not exist!" });
+      const chat = user.chat[user.chat.length - 1];
+      res.status(200).json({ message: "success", chat });
+    }
+    catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
+  // get particular chat
+  getChat = async (req, res) => {
+    try {
+      const { email, chatName } = req.body;
+      const user = await User.findOne({ email });
+      if (!user) return res.status(404).json({ message: "User does not exist!" });
+      const chat = user.chat.filter((chat) => chat.chatName === chatName);
+      res.status(200).json({ message: "success", chat });
+    }
+    catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
+  // create new chat 
+  createChat = async (req, res) => {
+    try {
+      const { email } = req.body;
+      const user = await User.findOne({ email });
+      if (!user) return res.status(404).json({ message: "User does not exist!" });
+      // get the last chat of user
+      const chat = user.chat[user.chat.length - 1];
+      if (chat?.chatInfo?.length > 0) {
+        const newChat = {
+          chatName: "Chat " + (user.chat.length + 1),
+          chatInfo: [],
+        };
+        user.chat.push(newChat);
+      }
+      await user.save();
+      res.status(200).json({ message: "success", chat: user.chat[user.chat.length - 1]});
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
+  // get all chats
+  getAllChats = async (req, res) => {
+    try {
+      const { email } = req.body;
+      const user = await User.findOne({ email });
+      if (!user) return res.status(404).json({ message: "User does not exist!" });
+      const chat = user.chat;
+      res.status(200).json({ message: "success", chat });
+    }
+    catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
   // test chat
   testChat = async (req, res) => {
     try {
-      const { email, query } = req.body;
+      const { email, query, start, end } = req.body;
       const user = await User.findOne({ email });
       const resp = 'This is the response from the server';
-      return res.status(200).json({ message: "success", resp });
+      const chat1 = {
+        name: "User",
+        message: query,
+        date: new Date(),
+        startLocation: start,
+        destination: end,
+      }
+      const chat2 = {
+        name: "Travel Buddy",
+        message: resp,
+        date: new Date(),
+      }
+      if (user.chat.length === 0) {
+        const newChat = {
+          chatName: "Chat 1",
+          chatInfo: [],
+        };
+        user.chat.push(newChat);
+      }
+        
+      user.chat[user.chat.length - 1].chatInfo.push(chat1);
+      user.chat[user.chat.length - 1].chatInfo.push(chat2)
+      await user.save();
+      return res.status(200).json({ message: "success" });
     } catch (error) {
       console.log(error)
       return res.status(500).json({ message: "Internal Server Error" });
@@ -150,7 +241,6 @@ class UserController {
     }
   }
     
-
 }
 
 export default UserController;

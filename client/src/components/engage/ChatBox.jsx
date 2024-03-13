@@ -1,19 +1,102 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextField, IconButton, Tooltip } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import { chatData } from '../../data/chatData';
+// import { chatData } from '../../data/chatData';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCurrChat } from '../../redux/features/querySlice';
 import Chat from './Chat';
+import { CircularProgress } from '@mui/material';
+import { toast } from 'react-toastify';
+import Api from '../../api';
+
+
 
 const ChatBox = ({ customMsg }) => {
+    const dispatch = useDispatch();
     const [message, setMessage] = useState(customMsg || '');
+    const currChat = useSelector((state) => state.query.currChat);
+    const [chatData, setChatData] = useState(currChat);
+    const [change, setChange] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const { startLocationInfo, destinationInfo } = useSelector((state) => state.query);
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    useEffect(() => {
+        setLoading(true);
+        console.log(currChat)
+        setChatData(currChat);
+        setLoading(false);
+    }, [currChat]);
+
+    useEffect(() => {
+        setLoading(true);
+        const fetchChatData = async () => {
+            await Api.getAllChats({ email: user.email })
+                .then((res) => {
+                    console.log(res.data)
+                    if (res.data.message === 'success') {
+                        const lastIdx = res.data.chat.length - 1;
+                        dispatch(setCurrChat(res.data.chat[lastIdx]?.chatInfo));
+                        setChatData(res.data.chat[lastIdx]?.chatInfo);
+                        setLoading(false);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+        fetchChatData();
+    }, [change]);
+
+    function timeout(delay) {
+        return new Promise(res => setTimeout(res, delay));
+    }
+
+    const sendMessage = async () => {
+        if (message.trim() === '') {
+            toast.error('Message cannot be empty');
+            return;
+        }
+        let chat = currChat;
+        console.log(currChat)
+        if (!chat) {
+            chat = [];
+        }
+        console.log(chat)
+        // chat.push({ sender: 'user', message: message });
+        const newChat = {
+            name: 'User',
+            message: message
+        }
+        chat = [...chat, newChat];
+        dispatch(setCurrChat(chat));
+        setChatData(chat);
+        await Api.testChat({ email: user.email, query: message, start: startLocationInfo?.formatted_address, end: destinationInfo?.formatted_address})
+        .then(async (res) => {
+            console.log(res.data)
+            await timeout(2000);
+            setMessage('');
+                if (res.data.message === 'success') {
+                    setChange(!change);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
     return (
         <div className='bg-white relative w-full h-full shadow-2xl shadow-slate rounded-xl p-4 flex flex-col'>
+            {loading ? 
+            (<div className='w-full h-full flex items-center justify-center'>
+                <CircularProgress />
+            </div>) 
+            : (<>
             <div className='w-full h-[88%]'>
-                <Chat chatData={chatData} />
+                <Chat chatData={currChat} />
             </div>
-            {chatData.length === 0 && (<div
+            {(!currChat || currChat?.length === 0) && (<div
             style={{
                 top: '40%',
                 left: '50%',
@@ -48,12 +131,13 @@ const ChatBox = ({ customMsg }) => {
                 </span>
                 <span>
                     <Tooltip title='Send' arrow>
-                    <IconButton>
+                    <IconButton onClick={sendMessage}>
                         <SendIcon sx={{ fontSize: '2rem', color: '#662d91' }} />
                     </IconButton>
                     </Tooltip>
                 </span>
             </div>
+            </>)}
         </div>
     );
 };

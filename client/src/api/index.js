@@ -58,6 +58,26 @@ class Api {
         return await api.post('api/user/verify-otp', data);
     }
 
+    static async sendEmail(data) {
+        return await api.post('api/user/send-email', data);
+    }
+
+    static async getChat(data) {
+        return await api.post('api/user/get/chat', data);
+    }
+
+    static async createChat(data) {
+        return await api.post('api/user/create/chat', data);
+    }
+
+    static async getAllChats(data) {
+        return await api.post('api/user/get/all-chat', data);
+    }
+
+    static async testChat(data) {
+        return await api.post('api/user/test/chat', data);
+    }
+
 }
 
 export default Api;

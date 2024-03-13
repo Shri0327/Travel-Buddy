@@ -13,5 +13,9 @@ uR.post('/send-email', uC.sendEmail);
 uR.post('/register', uC.register);
 uR.post('/login', uC.login);
 uR.post('/verify-otp', uC.verifyOtp);
+uR.post('/get/chat', auth, uC.getChat);
+uR.post('/create/chat', auth, uC.createChat);
+uR.post('/get/all-chat', auth, uC.getAllChats);
+uR.post('/test/chat', auth, uC.testChat);
 
 export default uR;

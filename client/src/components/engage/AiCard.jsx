@@ -24,12 +24,14 @@ import AddIcon from "@mui/icons-material/Add";
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Api from '../../api';
+import { setCurrChat } from '../../redux/features/querySlice';
 
-const AiCard = () => {
+const AiCard = ({ allChats }) => {
     const dispatch = useDispatch();
     const [state, setState] = useState(false);
     const [data, setData] = useState();
     const { audio, video, endVid } = useSelector((state) => state.aiCard);
+    const user = JSON.parse(localStorage.getItem('user'));
 
     const toggleDrawer = (open) => (event) => {
         if (
@@ -41,6 +43,20 @@ const AiCard = () => {
 
         setState(open);
     };
+
+    const createNewChat = async () => {
+        await Api.createChat({ email: user.email })
+            .then((res) => {
+                console.log(res.data)
+                if (res.data.message === "success") {
+                    // dispatch(setCurrProd(res.data.chat));
+                    dispatch(setCurrChat(res.data.chat?.chatInfo ? res.data.chat.chatInfo : []));
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
     const list = (data) => (
         <Box
@@ -67,24 +83,30 @@ const AiCard = () => {
                 <ListItem disablePadding>
                     <ListItemButton
                         onClick={() => {
-                            dispatch(setCurrProd(null));
+                            createNewChat();  
                         }}
                     >
                         <ListItemIcon>{<AddIcon />}</ListItemIcon>
                         <ListItemText primary={"New Chat"} />
                     </ListItemButton>
                 </ListItem>
-                {data?.map((text, index) => (
-                    <ListItem key={text._id} disablePadding>
+                {allChats?.reverse().map((chat, index) => {
+                    if (chat.chatInfo.length === 0) {
+                        return;
+                    }
+                    return (
+                        <ListItem key={chat._id} disablePadding>
                         <ListItemButton
                             onClick={() => {
-                                dispatch(setCurrProd(text));
+                                // dispatch(setCurrProd(chat));
+                                dispatch(setCurrChat(chat.chatInfo));
                             }}
                         >
-                            <ListItemText primary={text.name} secondary={text.date} />
+                            <ListItemText primary={chat.chatName}  />
                         </ListItemButton>
                     </ListItem>
-                ))}
+                    )
+                })}
             </List>
         </Box>
     );
@@ -104,7 +126,7 @@ const AiCard = () => {
             </Drawer>
             {!video ? (
                 <div className='w-full h-full flex items-center justify-center gap-4'>
-                    <NoAccountsRoundedIcon sx={{ fontSize: 100 }} />
+                    <NoAccountsRoundedIcon sx={{ fontSize: 225 }} />
                 </div>
             ) : (
                 <div className='w-full h-full flex items-center justify-center gap-4'>
