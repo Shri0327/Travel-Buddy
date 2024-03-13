@@ -11,6 +11,7 @@ import MapPage from "./pages/MapPage";
 import Blog from "./pages/Blog";
 import Profile from "./pages/Profile";
 import Redirect from "./Redirect";
+import Sendmssg from "./pages/Sendmssg"
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -79,6 +80,10 @@ function App() {
         {
           path: '/profile',
           element: <Profile />
+        },
+        {
+          path: '/sendmssg',
+          element: <Sendmssg />
         }
       ]
     }
