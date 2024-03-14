@@ -161,7 +161,7 @@ const ChatBox = ({ customMsg }) => {
                         className='absolute w-full text-center text-7xl font-bold opacity-15'>
                         ANY TRAVEL PLANS?
                     </div>)}
-                    <div className='bg-white w-full flex items-center gap-2 justify-evenly p-4 relative'>
+                    <div className='bg-white w-full flex items-center gap-2 justify-evenly p-2 relative '>
                         {image && (
                             <div className='w-20 h-20 flex items-center justify-center bg-gray-200 rounded-xl absolute top-[-70px] left-8 border-black border-2'>
                                 <div className='w-full h-full relative'>

@@ -46,7 +46,7 @@ def chatwithbot(txt:str):
 @app.route('/chat',methods=["POST"])
 def chat():
     try:
-        txt = request.form['text']
+        txt = request.form['query']
         res = chatwithbot(txt)
         res = str(res)
         last_inst_index = res.rfind("[/INST]")
