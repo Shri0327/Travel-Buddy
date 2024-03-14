@@ -85,12 +85,12 @@ const AiBox = ({ setCustomMsg, allChats }) => {
                     </IconButton>
                 </Tooltip>
             </div>
-            <button className='w-[80%] bg-[#662d91] p-2 flex items-center gap-2 text-white rounded-xl hover:shadow-xl'>
+            {/* <button className='w-[80%] bg-[#662d91] p-2 flex items-center gap-2 text-white rounded-xl hover:shadow-xl'>
                 <AutoAwesomeOutlinedIcon sx={{ fontSize: '2rem', color: 'white' }} />
                 <span>
                     Generate an Example
                 </span>
-            </button>
+            </button> */}
             <div className='w-full'>
                 <span>
                     From:

@@ -7,6 +7,7 @@ const initialState = {
   speakText : "",
   chatSaveChange: false,
   viewSavedChats: false,
+  resLoading: false,
 };
 
 export const aiCardSlice = createSlice({
@@ -32,7 +33,10 @@ export const aiCardSlice = createSlice({
     setEndVid: (state, action) => {
       state.endVid = action.payload;
     },
+    setResLoading: (state, action) => {
+      state.resLoading = action.payload;
+    }
   },
 });
 
-export const { toggleAudio, toggleVideo, setSpeakText, setchatSaveChange, setViewSavedChats, setEndVid } = aiCardSlice.actions;
+export const { toggleAudio, toggleVideo, setSpeakText, setchatSaveChange, setViewSavedChats, setEndVid, setResLoading } = aiCardSlice.actions;

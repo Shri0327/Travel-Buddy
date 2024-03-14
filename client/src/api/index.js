@@ -78,6 +78,10 @@ class Api {
         return await api.post('api/user/test/chat', data);
     }
 
+    static async whatsappTestChat(data) {
+        return await api.post('api/user/wp/test', data);
+    }
+
 }
 
 export default Api;
