@@ -233,7 +233,7 @@ function Login() {
                         </Components.LeftOverlayPanel>
 
                         <Components.RightOverlayPanel signinIn={signIn}>
-                            <Components.Title>Welcome to One Hub!</Components.Title>
+                            <Components.Title>Welcome to Travel Buddy!</Components.Title>
                             <Components.Paragraph>
                                 One Click, Infinite Connections - Your Content, Everywhere!
                             </Components.Paragraph>
