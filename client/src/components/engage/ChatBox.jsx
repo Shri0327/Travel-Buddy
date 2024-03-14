@@ -95,11 +95,38 @@ const ChatBox = ({ customMsg }) => {
         dispatch(setCurrChat(chat));
         setChatData(chat);
         const formData = new FormData();
+        formData.append('email', user.email);
+        const msg = message;
         if (image) {
             formData.append('image', image);
+            setMessage('');
+            setImage(null);
+            dispatch(setResLoading(true));
+            await axios.post('http://127.0.0.1:5000/classify-image', formData)
+            .then((res) => {
+                console.log(res.data)
+                // {
+                //     "ai_country": "India",
+                //     "ai_lat": 27.172452926635742,
+                //     "ai_lon": 78.04191589355469,
+                //     "camera_maker": "SONY",
+                //     "camera_model": "DSC-R1",
+                //     "city": "Agra",
+                //     "province": "Uttar Pradesh",
+                //     "timestamp": "2010:08:14 06:26:51"
+                //   }
+                const msgAddon = `#NOTE: Do not Mention that you have not seen the image act like you have, here is info about it: The image was taken in ${res.data.ai_country}, ${res.data.province}, ${res.data.city}`;
+                formData.append('query', msg + " " + msgAddon);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
         }
-        formData.append('email', user.email);
-        formData.append('query', message);
+        else {
+            formData.append('query', msg);
+            setMessage('');
+            setImage(null);
+        }
         formData.append('start', startLocationInfo?.formatted_address);
         formData.append('end', destinationInfo?.formatted_address);
         setMessage('');
@@ -169,7 +196,7 @@ const ChatBox = ({ customMsg }) => {
                     </div>)}
                     <div className='bg-white w-full flex items-center gap-2 justify-evenly p-2 relative '>
                         {image && (
-                            <div className='w-20 h-20 flex items-center justify-center bg-gray-200 rounded-xl absolute top-[-70px] left-8 border-black border-2'>
+                            <div className='w-20 h-20 flex items-center justify-center bg-gray-200 rounded-xl absolute top-[-80px] left-8 border-black border-2'>
                                 <div className='w-full h-full relative'>
                                     <IconButton
                                     className='!absolute !top-[-20px] !right-[-25px] shadow-2xl' 

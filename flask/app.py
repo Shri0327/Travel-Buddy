@@ -70,11 +70,20 @@ def chat():
         last_inst_index = res.rfind("[/INST]")
         res = res[last_inst_index + len("[/INST]"):].strip()
         print(res)
+        c1msg = txt.split('#')[0]
+        image_file = request.files['image']
+        print(image_file.filename)
+        imgName = image_file.filename
         chat1 = {
             "name": "User",
-            "message": txt,
+            "message": c1msg,
             "startLocation": start,
             "destination": end,
+            "picture": {
+                "is_attached": True,
+                "pic_name": imgName,
+                "pic_type": "image"
+            }
         }
 
         chat2 = {
