@@ -61,7 +61,7 @@ def chat():
         print(txt, email, start, end)
         print('62')
         if start:
-            txt = txt + "#Also Note that the start and end location are just for reference in case user asks about it dont mention them as undefined" + "#The user has entered the start location as" + start 
+            txt = txt + "#Also Note that the start and end location are just for reference in case user asks about it DONT MENTION THE START AND END AS UNDEFINED" + "#The user has entered the start location as" + start 
         if end:
             txt = txt + "#The user has entered the end location as" + end
 
@@ -74,11 +74,18 @@ def chat():
         res = str(res)
         last_inst_index = res.rfind("[/INST]")
         res = res[last_inst_index + len("[/INST]"):].strip()
-        print(res)
+        # print(res)
         c1msg = txt.split('#')[0]
-        image_file = request.files['image']
-        print(image_file.filename)
-        imgName = image_file.filename
+        if request.files:
+            image_file = request.files['image']
+        else:
+            image_file = None
+        print('imageeeeeeee ------', image_file)
+        # print(image_file.filename)
+        if image_file:
+            imgName = image_file.filename
+        else:
+            imgName = None
         print('62')
         if imgName:
             picObj = {
@@ -105,6 +112,9 @@ def chat():
             "message": res,
         }
         
+        # if not image_file:
+        #     return jsonify({"message": "success", "text": res}), 200
+
         if 'chat' not in user or len(user['chat']) == 0:
             newChat = {
             "chatName": "Chat 1",

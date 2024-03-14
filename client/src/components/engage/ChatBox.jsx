@@ -124,6 +124,7 @@ const ChatBox = ({ customMsg }) => {
         }
         else {
             formData.append('query', msg);
+            formData.append('image', null)
             setMessage('');
             setImage(null);
         }

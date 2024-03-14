@@ -225,7 +225,7 @@ function Login() {
                         <Components.LeftOverlayPanel signinIn={signIn}>
                             <Components.Title>Welcome Back!</Components.Title>
                             <Components.Paragraph>
-                                Create Once, Share Everywhere - Amplify Your Digital Presence.
+                            Streamline your travel planning with our trusty Travel Buddy.
                             </Components.Paragraph>
                             <Components.GhostButton onClick={() => toggle(true)}>
                                 Sign In
@@ -235,7 +235,7 @@ function Login() {
                         <Components.RightOverlayPanel signinIn={signIn}>
                             <Components.Title>Welcome to Travel Buddy!</Components.Title>
                             <Components.Paragraph>
-                                One Click, Infinite Connections - Your Content, Everywhere!
+                                One Click, Infinite Information - You can Travel, Everywhere!
                             </Components.Paragraph>
                             <Components.GhostButton onClick={() => toggle(false)}>
                                 Sign Up
