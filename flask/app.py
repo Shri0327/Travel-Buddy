@@ -1,3 +1,4 @@
+from pymongo import MongoClient 
 from langchain.schema import HumanMessage, AIMessage
 from langchain_community.chat_models.huggingface import ChatHuggingFace
 from langchain.prompts import PromptTemplate
@@ -10,6 +11,7 @@ import requests
 import json
 import base64
 from flask import Flask, jsonify, request
+from flask_pymongo import PyMongo
 
 from dotenv import load_dotenv, get_key
 load_dotenv()
@@ -19,6 +21,12 @@ app = Flask(__name__)
 CORS(app)
 
 os.environ["HUGGINGFACEHUB_API_TOKEN"] = get_key(key_to_get="HUGGINGFACEHUB_API_KEY",dotenv_path=".env")
+
+# app.config["MONGO_URI"] = "mongodb+srv://sonarsiddhesh105:K5NuO27RwuV2R986@cluster0.0aedb3y.mongodb.net/"
+# mongo = PyMongo(app)
+client = MongoClient("mongodb+srv://sonarsiddhesh105:K5NuO27RwuV2R986@cluster0.0aedb3y.mongodb.net/")
+db = client["test"]
+mongo = db["recur-users"]
 
 llm = HuggingFaceHub(
     repo_id="mistralai/Mixtral-8x7B-Instruct-v0.1",
@@ -47,13 +55,49 @@ def chatwithbot(txt:str):
 def chat():
     try:
         txt = request.form['query']
+        email = request.form['email']
+        start = request.form['start']
+        end = request.form['end']
+        print(txt, email, start, end)
+
+        # find user in db
+        user = mongo.find_one({"email": email})
+        if user is None:
+            return jsonify({"error": "User not found"})
+        
         res = chatwithbot(txt)
         res = str(res)
         last_inst_index = res.rfind("[/INST]")
         res = res[last_inst_index + len("[/INST]"):].strip()
         print(res)
-        return jsonify(res)
+        chat1 = {
+            "name": "User",
+            "message": txt,
+            "startLocation": start,
+            "destination": end,
+        }
+
+        chat2 = {
+            "name": "Travel Buddy",
+            "message": res,
+        }
+        
+        if 'chat' not in user or len(user['chat']) == 0:
+            newChat = {
+            "chatName": "Chat 1",
+            "chatInfo": [],
+            }
+            user.setdefault('chat', []).append(newChat)
+
+        user['chat'][-1]['chatInfo'].append(chat1)
+        user['chat'][-1]['chatInfo'].append(chat2)
+
+        # Update the user document in the database
+        mongo.update_one({"email": email}, {"$set": user})
+
+        return jsonify({"message": "success", "text": res}), 200
     except Exception as e:
+        print(e)
         return jsonify({"error": str(e)})
 
 @app.route('/classify-image', methods=['POST'])
@@ -64,8 +108,14 @@ def classify_image():
         headers = {"Content-Type": "application/json"}
 
         # Read the image from a local file
-        with open("./Taj-Mahal.jpg", "rb") as image_file:
-            img_path = base64.b64encode(image_file.read()).decode('utf-8')
+        # with open("./Taj-Mahal.jpg", "rb") as image_file:
+        #     img_path = base64.b64encode(image_file.read()).decode('utf-8')
+        if 'image' not in request.files:
+            return jsonify({"error": "No image provided"})
+
+        # Read the image from form data
+        image_file = request.files['image']
+        img_path = base64.b64encode(image_file.read()).decode('utf-8')
 
         # Prepare the payload
         payload = {"TOKEN": api_token, "IMAGE": img_path}
