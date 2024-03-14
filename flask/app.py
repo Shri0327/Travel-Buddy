@@ -59,12 +59,17 @@ def chat():
         start = request.form['start']
         end = request.form['end']
         print(txt, email, start, end)
+        print('62')
+        if start:
+            txt = txt + "#Also Note that the start and end location are just for reference in case user asks about it dont mention them as undefined" + "#The user has entered the start location as" + start 
+        if end:
+            txt = txt + "#The user has entered the end location as" + end
 
         # find user in db
         user = mongo.find_one({"email": email})
         if user is None:
             return jsonify({"error": "User not found"})
-        
+        print(txt)
         res = chatwithbot(txt)
         res = str(res)
         last_inst_index = res.rfind("[/INST]")
@@ -74,16 +79,25 @@ def chat():
         image_file = request.files['image']
         print(image_file.filename)
         imgName = image_file.filename
+        print('62')
+        if imgName:
+            picObj = {
+                "is_attached": True,
+                "pic_name": imgName,
+                "pic_type": "image"
+            }
+        else:
+            picObj = {
+                "is_attached": False,
+                "pic_name": "",
+                "pic_type": ""
+            }
         chat1 = {
             "name": "User",
             "message": c1msg,
             "startLocation": start,
             "destination": end,
-            "picture": {
-                "is_attached": True,
-                "pic_name": imgName,
-                "pic_type": "image"
-            }
+            "picture": picObj
         }
 
         chat2 = {
@@ -100,6 +114,8 @@ def chat():
 
         user['chat'][-1]['chatInfo'].append(chat1)
         user['chat'][-1]['chatInfo'].append(chat2)
+
+        print(user['chat'][-1]['chatInfo']) 
 
         # Update the user document in the database
         mongo.update_one({"email": email}, {"$set": user})
