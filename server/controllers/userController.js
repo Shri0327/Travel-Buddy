@@ -5,10 +5,10 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import dotenv from "dotenv";
 import nodemailer from "nodemailer";
-import OpenAI from "openai";
+import { spawn } from "child_process";
+import multer from "multer";
 
 dotenv.config();
-
 
 class UserController {
   constructor() { }
@@ -226,6 +226,19 @@ class UserController {
       return res.status(200).json({ message: "success", text: resp });
     } catch (error) {
       console.log(error)
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
+  // whatsapp test chat
+  whatsappTestChat = async (req, res) => {
+    try {
+      const { query } = req.body;
+      const resp = 'You sent this message' + query + 'This is the response from the server';
+      return res.status(200).json({ message: "success", text: resp });
+    }
+    catch (error) {
+      console.log(error);
       return res.status(500).json({ message: "Internal Server Error" });
     }
   }

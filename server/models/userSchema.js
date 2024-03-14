@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
 
 const picSchema = new mongoose.Schema({
-  is_attached: String,
-  og_pic_name: String,
+  is_attached: Boolean,
   pic_type: String,
   pic_name: String,
   pic_path: String,
