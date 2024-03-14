@@ -10,6 +10,8 @@ import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import { toggleAudio, toggleVideo } from '../../redux/features/aiCard';
 import Autocomplete from "react-google-autocomplete";
 import { setDestinationInfo, setStartLocationInfo } from '../../redux/features/querySlice';
+import { setEndVid } from '../../redux/features/aiCard';
+import StopCircleIcon from '@mui/icons-material/StopCircle';
 import { Spin as Hamburger } from 'hamburger-react'
 import { toast } from 'react-toastify';
 import Api from '../../api';
@@ -70,6 +72,23 @@ const AiBox = ({ setCustomMsg, allChats }) => {
                         {video ? (<VideocamOffOutlinedIcon sx={{ fontSize: '2rem' }} />) : (<VideocamOutlinedIcon sx={{ fontSize: '2rem' }} />)}
                     </IconButton>
                 </Tooltip>
+                <Tooltip title={'Stop'} arrow>
+                    <IconButton sx={{
+                        color: 'white',
+                        padding: '10px',
+                        backgroundColor: '#662d91',
+                        '&:hover': {
+                            backgroundColor: '#662d91',
+                        },
+                    }}
+                        onClick={() => {
+                            window.speechSynthesis.cancel()
+                            dispatch(setEndVid(false));
+                        }}
+                    >
+                        <StopCircleIcon sx={{ fontSize: '2rem' }} />
+                    </IconButton>
+                </Tooltip>
                 <Tooltip title={!audio ? 'Turn Off Audio' : 'Turn On Audio'} arrow>
                     <IconButton sx={{
                         color: 'white',
@@ -85,12 +104,6 @@ const AiBox = ({ setCustomMsg, allChats }) => {
                     </IconButton>
                 </Tooltip>
             </div>
-            {/* <button className='w-[80%] bg-[#662d91] p-2 flex items-center gap-2 text-white rounded-xl hover:shadow-xl'>
-                <AutoAwesomeOutlinedIcon sx={{ fontSize: '2rem', color: 'white' }} />
-                <span>
-                    Generate an Example
-                </span>
-            </button> */}
             <div className='w-full'>
                 <span>
                     From:

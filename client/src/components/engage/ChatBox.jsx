@@ -13,6 +13,7 @@ import { CircularProgress } from '@mui/material';
 import { toast } from 'react-toastify';
 import Api from '../../api';
 import DotLoader from './DotLoader';
+import axios from 'axios';
 
 const ChatBox = ({ customMsg }) => {
     const dispatch = useDispatch();
@@ -64,6 +65,10 @@ const ChatBox = ({ customMsg }) => {
         return new Promise(res => setTimeout(res, delay));
     }
 
+    useEffect(() => {
+        window.speechSynthesis.cancel();
+    }, []);
+
     const sendMessage = async () => {
         if (message.trim() === '') {
             toast.error('Message cannot be empty');
@@ -100,8 +105,9 @@ const ChatBox = ({ customMsg }) => {
         setMessage('');
         setImage(null);
         dispatch(setResLoading(true));
-        await Api.testChat(formData)
+        // await Api.testChat(formData)
             // { email: user.email, query: message, start: startLocationInfo?.formatted_address, end: destinationInfo?.formatted_address })
+        await axios.post('http://127.0.0.1:5000/chat', formData)
             .then(async (res) => {
                 console.log(res.data)
                 await timeout(10000);
@@ -161,7 +167,7 @@ const ChatBox = ({ customMsg }) => {
                         className='absolute w-full text-center text-7xl font-bold opacity-15'>
                         ANY TRAVEL PLANS?
                     </div>)}
-                    <div className='bg-white w-full flex items-center gap-2 justify-evenly p-4 relative'>
+                    <div className='bg-white w-full flex items-center gap-2 justify-evenly p-2 relative '>
                         {image && (
                             <div className='w-20 h-20 flex items-center justify-center bg-gray-200 rounded-xl absolute top-[-70px] left-8 border-black border-2'>
                                 <div className='w-full h-full relative'>
