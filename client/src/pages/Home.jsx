@@ -9,12 +9,12 @@ import logo from "../assets/logo-hck.svg";
 
 const Home = () => {
     return (
-        <section className="w-full h-full mx-auto max-w-7xl px-4  text-char flex items-start justify-between gap-4">
+        <section className=" w-full h-full mx-auto max-w-7xl px-4  text-char flex items-start justify-between gap-4">
             <div className="mt-16 flex flex-col items-start justify-between gap-8 md:px-8">
                 <div>
                     <Left>
                         <h2 className="max-w-lg text-4xl font-bold md:text-5xl text-black">
-                            Grow faster with our
+                            Plan faster with our
                             <span className="text-[#662d91]"> all in one solution</span>
                         </h2>
                     </Left>
