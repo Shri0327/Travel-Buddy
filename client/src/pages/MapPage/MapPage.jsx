@@ -73,15 +73,15 @@ const MapContainer = () => {
   const handleAutocompleteLoad = (autocomplete) => {
     setAutocomplete(autocomplete);
   };
-
+ 
   const onLoad = (map) => {
     setMap(map); // Store the map object
   };
 
   return (
     <LoadScript googleMapsApiKey="AIzaSyDtnPmw3rJGTqdCbNl_GAHvNK6XHEO-0aU" libraries={["places"]}>
-      <div>
-        <button onClick={handleNavigateToCurrentLocation}>Navigate to Current Location</button>
+      <div className='flex flex-col items-center'>
+        <button onClick={handleNavigateToCurrentLocation} className="bg-[#33006F] flex   px-4 py-2 text-white rounded mt-1 mb-2 w-fit">Current Location</button>
         <Autocomplete
           onLoad={handleAutocompleteLoad}
           onPlaceChanged={handlePlaceSelect}
@@ -91,6 +91,7 @@ const MapContainer = () => {
             placeholder="Search for location..."
             value={searchLocation}
             onChange={(e) => setSearchLocation(e.target.value)}
+            className='h-9 rounded '
           />
         </Autocomplete>
       </div>
