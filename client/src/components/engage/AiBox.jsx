@@ -109,7 +109,7 @@ const AiBox = ({ setCustomMsg, allChats }) => {
                     From:
                 </span>
                 <Autocomplete
-                    apiKey={'AIzaSyAEqgEnXc6d4MHhkJaiIp0xMkUFhIcBGvY'}
+                    apiKey={'AIzaSyDtnPmw3rJGTqdCbNl_GAHvNK6XHEO-0aU'}
                     onPlaceSelected={(place) => {
                         console.log(place);
                         dispatch(setStartLocationInfo(place));
@@ -131,7 +131,7 @@ const AiBox = ({ setCustomMsg, allChats }) => {
                     To:
                 </span>
                 <Autocomplete
-                    apiKey={'AIzaSyAEqgEnXc6d4MHhkJaiIp0xMkUFhIcBGvY'}
+                    apiKey={'AIzaSyDtnPmw3rJGTqdCbNl_GAHvNK6XHEO-0aU'}
                     onPlaceSelected={(place) => {
                         console.log(place);
                         dispatch(setDestinationInfo(place));
