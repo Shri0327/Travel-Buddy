@@ -34,7 +34,7 @@ llm = HuggingFaceHub(
     model_kwargs={
         "max_new_tokens": 512,
         "top_k": 30,
-        "temperature": 0.3,
+        "temperature": 0.6,
         "repetition_penalty": 1.03,
     },
 )
@@ -44,7 +44,7 @@ def chatwithbot(txt:str):
     user_template= PromptTemplate(template="{user_input}", input_variables=["user_input"])
     messages = [
     HumanMessage(content="..."),
-    AIMessage(content="You're a helpful travel planner and tour guide, user asks their query and you have to respond accuretly and strictly in same language."),
+    AIMessage(content="You're a helpful travel planner and tour guide, user asks their query and you have to respond accuretly and strictly in same language. If location details are provided act like you have extracted the details from the picture. REMEMBER FOR EACH AND EVERY RESPONSE the important things like the names of places, dates and anything you feel important should be wrapped in <b></b> tag like this <b>Delhi</b>. DO NOT MENTION THE START LOCATION AND END LOCATION AS UNDEFINED OR NOT PROVIDED"),
     HumanMessage(content=user_template.format(user_input=txt)),
     ]
     res = chat_model(messages).content
@@ -58,8 +58,9 @@ def chat():
         email = request.form['email']
         start = request.form['start']
         end = request.form['end']
-        print(txt, email, start, end)
+        print(txt)
         print('62')
+        txt = txt + "#Note that the important things in the response like the names of places, dates etc. should be wrapped in <b></b> tag like this but only once - Visit the <b>Taj Mahal</b> on day 3, Taj Mahal is a very beautiful place."
         if start:
             txt = txt + "#Also Note that the start and end location are just for reference in case user asks about it DONT MENTION THE START AND END AS UNDEFINED" + "#The user has entered the start location as" + start 
         if end:
@@ -80,7 +81,7 @@ def chat():
             image_file = request.files['image']
         else:
             image_file = None
-        print('imageeeeeeee ------', image_file)
+        # print('imageeeeeeee ------', image_file)
         # print(image_file.filename)
         if image_file:
             imgName = image_file.filename
@@ -125,7 +126,7 @@ def chat():
         user['chat'][-1]['chatInfo'].append(chat1)
         user['chat'][-1]['chatInfo'].append(chat2)
 
-        print(user['chat'][-1]['chatInfo']) 
+        # print(user['chat'][-1]['chatInfo']) 
 
         # Update the user document in the database
         mongo.update_one({"email": email}, {"$set": user})

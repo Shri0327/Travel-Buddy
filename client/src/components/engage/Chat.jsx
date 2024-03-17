@@ -27,7 +27,9 @@ const Chat = ({ chatData }) => {
                     <img src={chat.name === 'User' ? 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png' : maleStatic} alt="" className='w-12 h-12 object-cover rounded-full border self-start' />
                     <div>
                         <span className={`font-bold ${chat.name === 'User' ? "text-indigo-900" : "text-purple-900"}`}>{chat.name}</span>
-                        <p>{chat.message}</p>
+                        {/* <p>{chat.message}</p> */}
+                        {/* dangerously set innerhtml */}
+                        <p dangerouslySetInnerHTML={{ __html: chat.message }}></p>
                     </div>
                     {chat.picture?.is_attached && (
                             <div className='!w-[90%] absolute left-0 bottom-[-15px]'>

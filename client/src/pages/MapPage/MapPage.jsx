@@ -79,7 +79,7 @@ const MapContainer = () => {
   };
 
   return (
-    <LoadScript googleMapsApiKey="AIzaSyDtnPmw3rJGTqdCbNl_GAHvNK6XHEO-0aU" libraries={["places"]}>
+    <LoadScript googleMapsApiKey="AIzaSyAEqgEnXc6d4MHhkJaiIp0xMkUFhIcBGvY" libraries={["places"]}>
       <div className='flex flex-col items-center'>
         <button onClick={handleNavigateToCurrentLocation} className="bg-[#33006F] flex   px-4 py-2 text-white rounded mt-1 mb-2 w-fit">Current Location</button>
         <Autocomplete

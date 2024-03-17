@@ -8,7 +8,7 @@ function FlightRoute() {
   useEffect(() => {
     // Load Google Maps API
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key='AIzaSyDtnPmw3rJGTqdCbNl_GAHvNK6XHEO-0aU'&libraries=places`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key='AIzaSyAEqgEnXc6d4MHhkJaiIp0xMkUFhIcBGvY'&libraries=places`;
     script.async = true;
     script.defer = true;
     script.onload = initMap;
