@@ -21,7 +21,7 @@ Travel Buddy is an innovative travel planner that integrates image recognition, 
 To set up Travel Buddy locally, follow these steps:
 
 1. Clone this repository to your local machine.
-2. You would also need the Google Maps API key, Hugging Face API key and also Picarta API Token (https://picarta.ai/api) 
+2. You would also need the Google Maps API key, Hugging Face API key and also Picarta API Token. (https://picarta.ai/api) 
 3. Navigate to the project directory.
 4. Install dependencies for both the frontend and backend.
 5. Run the frontend and backend servers.
